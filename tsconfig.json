@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+       "jsx": "react",
+       "baseUrl": "./packages",
+       "paths": {
+          "@little-bittern/client/*": ["client/src/*"],
+          "@little-bittern/scraper/*": ["scraper/src/*"],
+          "@little-bittern/server/*": ["server/src/*"]
+       }
+     }
+  }
