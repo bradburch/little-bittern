@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --build --verbose"
+    "build": "tsc --build --verbose",
+    "pretty": "npx prettier . --write"
   },
   "keywords": [],
   "author": "",

@@ -137,3 +137,4 @@ dist
 **/token.json
 
 **/.DS_STORE
+**/build/

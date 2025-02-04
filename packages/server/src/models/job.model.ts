@@ -6,11 +6,9 @@ import {
   ForeignKey,
   BelongsTo,
   IsUrl,
-  NotNull,
   AllowNull,
-} from "sequelize-typescript";
-import Company from "./company.model.js";
-import { Json } from "sequelize/types/utils";
+} from 'sequelize-typescript';
+import Company from './company.model.js';
 
 @Table
 export default class Job extends Model {
@@ -23,15 +21,18 @@ export default class Job extends Model {
   declare url: string;
 
   @Column({ type: DataType.JSON })
-  declare applicationText: Json;
+  declare applicationText: JSON;
 
   @Column({ type: DataType.BOOLEAN })
   declare applied: boolean;
 
+  @Column({ type: DataType.TEXT })
+  declare location: string;
+
   @AllowNull(false)
   @ForeignKey(() => Company)
   @Column({ type: DataType.INTEGER })
-  declare companyId: string;
+  declare companyId: number;
 
   @BelongsTo(() => Company)
   declare company: Company;

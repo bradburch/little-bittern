@@ -1,5 +1,5 @@
-import Company from "../models/company.model.js";
-import Job from "../models/job.model.js";
+import Company from '../models/company.model.js';
+import Job from '../models/job.model.js';
 
 const companies: Map<string, number> = new Map();
 

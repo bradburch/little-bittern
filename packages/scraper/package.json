@@ -15,10 +15,7 @@
     "@google-cloud/local-auth": "^2.1.0",
     "axios": "^1.7.9",
     "cheerio": "^1.0.0",
-    "googleapis": "^105.0.0",
-    "pg": "^8.13.1",
-    "sequelize": "^6.37.5",
-    "sequelize-typescript": "^2.1.6"
+    "googleapis": "^105.0.0"
   },
   "description": ""
 }

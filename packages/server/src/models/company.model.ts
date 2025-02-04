@@ -5,11 +5,10 @@ import {
   DataType,
   IsUrl,
   AllowNull,
-} from "sequelize-typescript";
+} from 'sequelize-typescript';
 
 @Table
 export default class Company extends Model {
-  
   @AllowNull(false)
   @Column({ type: DataType.STRING })
   declare name: string;

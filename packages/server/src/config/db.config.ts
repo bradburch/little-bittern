@@ -1,4 +1,4 @@
-import "dotenv/config";
+import 'dotenv/config';
 
 export const config = {
   HOST: process.env.DB_HOST,
@@ -13,4 +13,4 @@ export const config = {
   },
 };
 
-export const dialect = "postgres";
+export const dialect = 'postgres';

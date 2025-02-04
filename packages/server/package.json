@@ -1,22 +1,25 @@
 {
   "name": "@little-bittern/server",
   "version": "1.0.0",
-  "main": ".build/index.js",
+  "main": "./build/index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && npm run dev",
-    "build": "tsc",
-    "dev": "node ./build/server.js"
+    "start": "npx tsc && node ./build/index.js",
+    "build": "npx tsc",
+    "dev": "node ./build/index.js"
   },
   "keywords": [],
   "author": "bradburch",
   "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2",
+    "pg": "^8.13.1",
+    "sequelize": "^6.37.5"
+  },
+  "description": "",
   "devDependencies": {
     "@types/express": "^4.17.21",
-    "pg": "^8.13.1"
-  },
-  "dependencies": {
-    "express": "^4.21.2"
-  },
-  "description": ""
+    "sequelize-typescript": "^2.1.6"
+  }
 }

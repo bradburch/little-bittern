@@ -1,7 +1,7 @@
-import { Sequelize } from "sequelize-typescript";
-import { config, dialect } from "../config/db.config.js";
-import Company from "../models/company.model.js";
-import Job from "../models/job.model.js";
+import { Sequelize } from 'sequelize-typescript';
+import { config, dialect } from '../config/db.config.js';
+import Company from '../models/company.model.js';
+import Job from '../models/job.model.js';
 
 class Database {
   public sequelize: Sequelize | undefined;
@@ -29,10 +29,10 @@ class Database {
     await this.sequelize
       .authenticate()
       .then(() => {
-        console.log("Connection has been established successfully.");
+        console.log('Connection has been established successfully.');
       })
       .catch((err) => {
-        console.error("Unable to connect to the Database:", err);
+        console.error('Unable to connect to the Database:', err);
       });
   }
 }
