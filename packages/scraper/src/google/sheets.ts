@@ -64,7 +64,7 @@ async function getRows(auth: Auth.OAuth2Client): Promise<any[][]> {
   return rows;
 }
 
-export async function getAppliedJobs(): Promise<any[][]> {
+export default async function getAppliedJobs(): Promise<any[][]> {
   const auth = await authorize();
   const appliedJobs = await getRows(auth);
 

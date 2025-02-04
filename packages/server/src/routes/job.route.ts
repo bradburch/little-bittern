@@ -1,19 +1,20 @@
 import { Router } from 'express';
-import CompanyController from '../controllers/company.controller.js';
+import JobController from '../controllers/job.controller.js';
 
-class CompanyRoutes {
+class JobRoutes {
   router: Router = Router();
-  controller = new CompanyController();
+  controller = new JobController();
 
   constructor() {
     this.intializeRoutes();
   }
 
   intializeRoutes() {
+    this.router.post('/create/bulk', this.controller.bulkCreate)
     this.router.post('/create/:name', this.controller.create);
     this.router.get('/all', this.controller.findAll);
-    this.router.get('/:name', this.controller.findByName);
+    
   }
 }
 
-export default new CompanyRoutes().router;
+export default new JobRoutes().router;

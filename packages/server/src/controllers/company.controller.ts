@@ -4,14 +4,10 @@ import CompanyRepository from '../repositories/company.repository.js';
 
 export default class CompanyController {
   async create(req: Request, res: Response) {
-    if (!req.body.name) {
-      res.status(400).send({
-        message: 'Content can not be empty!',
-      });
-    }
+    const companyName: string = req.params.name;
 
     try {
-      const company: Company = req.body;
+      const company: Company = new Company({ name: companyName });
       const repo = new CompanyRepository();
       const savedCompany = await repo.save(company);
 
@@ -24,7 +20,7 @@ export default class CompanyController {
   }
 
   async findByName(req: Request, res: Response) {
-    const companyName: string = req.params.company;
+    const companyName: string = req.params.name;
 
     try {
       const repo: CompanyRepository = new CompanyRepository();

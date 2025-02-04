@@ -1,7 +1,8 @@
 import express, { Express, Request, Response } from 'express';
 import 'dotenv/config';
-import CompanyRoutes from './routes/company.route.js';
+import companyRoutes from './routes/company.route.js';
 import Database from './db/index.js';
+import jobRoutes from './routes/job.route.js';
 
 const app: Express = express();
 const port = process.env.PORT || 8080;
@@ -17,7 +18,8 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Server Started');
 });
 
-app.use('/api', CompanyRoutes);
+app.use('/api/company', companyRoutes);
+app.use('/api/job', jobRoutes);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);
