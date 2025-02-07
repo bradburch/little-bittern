@@ -5,9 +5,6 @@ interface ICompanyRepository {
   save(company: Company): Promise<Company>;
   retrieveAll(): Promise<Company[]>;
   retrieveByName(companyName: string): Promise<Company | null>;
-  // update(company: Company): Promise<number>;
-  // delete(companyId: number): Promise<number>;
-  // deleteAll(): Promise<number>;
 }
 
 export default class CompanyRepository implements ICompanyRepository {

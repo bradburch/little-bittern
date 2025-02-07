@@ -5,11 +5,7 @@ interface IJobRepository {
   save(job: Job): Promise<Job>;
   bulkCreate(jobs: any): Promise<Job[]>;
   retrieveAll(): Promise<Job[]>;
-
-//   retrieveByName(companyName: string): Promise<Company | null>;
-  // update(company: Company): Promise<number>;
-  // delete(companyId: number): Promise<number>;
-  // deleteAll(): Promise<number>;
+  update(job: Job, id: string): Promise<number[]>;
 }
 
 export default class JobRepository implements IJobRepository {
@@ -48,6 +44,23 @@ export default class JobRepository implements IJobRepository {
       return await Job.bulkCreate(jobs);
     } catch (err) {
       throw new Error(`Bulk create failed due to`);
+    }
+  }
+
+  public async update(job: Job, id: string): Promise<number[]> {
+    try {
+      return await Job.update(
+        {
+          applicationText: job.applicationText,
+          title: job.title,
+          location: job.location
+        },
+        {
+          where: { id: id },
+        },
+      );
+    } catch (err) {
+      throw new Error(`Job update with id: ${id} failed.`);
     }
   }
 }

@@ -24,24 +24,24 @@ export default class JobController {
   }
 
   async bulkCreate(req: Request, res: Response) {
-    console.log("Req body: ", req.body);
+    console.log('Req body: ', req.body);
     if (Object.keys(req.body).length === 0) {
-        res.status(400).send({
-          message: 'Bulk create cannot be empty!',
-        });
-      }
-  
-      try {
-        const job = req.body;
-        const repo = new JobRepository();
-        const savedJob = await repo.bulkCreate(job);
-  
-        res.status(201).send(savedJob);
-      } catch (err) {
-        res.status(500).send({
-          message: 'Some error occurred while retrieving jobs.'
-        });
-      }
+      res.status(400).send({
+        message: 'Bulk create cannot be empty!',
+      });
+    }
+
+    try {
+      const job = req.body;
+      const repo = new JobRepository();
+      const savedJob = await repo.bulkCreate(job);
+
+      res.status(201).send(savedJob);
+    } catch (err) {
+      res.status(500).send({
+        message: 'Some error occurred while retrieving jobs.',
+      });
+    }
   }
 
   async findByName(req: Request, res: Response) {
@@ -68,6 +68,26 @@ export default class JobController {
     } catch (err) {
       res.status(500).send({
         message: 'Some error occurred while retrieving jobs.' + err,
+      });
+    }
+  }
+
+  async update(req: Request, res: Response) {
+    if (!req.body.applicationText) {
+      res.status(400).send({
+        message: 'Content can not be empty!',
+      });
+    }
+    const jobId: string = req.params.id;
+    
+    try {
+      const repo: JobRepository = new JobRepository();
+      const success: number[] = await repo.update(req.body, jobId);
+
+      res.status(201).send(success);
+    } catch (err) {
+      res.status(500).send({
+        message: 'Some error occurred while updating companies.' + err,
       });
     }
   }

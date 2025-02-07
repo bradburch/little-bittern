@@ -26,6 +26,9 @@ export default class Job extends Model {
   @Column({ type: DataType.BOOLEAN })
   declare applied: boolean;
 
+  @Column({ type: DataType.STRING })
+  declare location: string;
+
   @AllowNull(false)
   @ForeignKey(() => Company)
   @Column({ type: DataType.INTEGER })

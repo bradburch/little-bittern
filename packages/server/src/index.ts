@@ -18,8 +18,8 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Server Started');
 });
 
-app.use('/api/company', companyRoutes);
-app.use('/api/job', jobRoutes);
+app.use('/api/companies', companyRoutes);
+app.use('/api/jobs', jobRoutes);
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);

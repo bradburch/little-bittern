@@ -10,10 +10,10 @@ class JobRoutes {
   }
 
   intializeRoutes() {
-    this.router.post('/create/bulk', this.controller.bulkCreate)
-    this.router.post('/create/:name', this.controller.create);
-    this.router.get('/all', this.controller.findAll);
-    
+    this.router.post('/bulk', this.controller.bulkCreate);
+    this.router.post('/', this.controller.create);
+    this.router.put('/:id', this.controller.update);
+    this.router.get('/', this.controller.findAll);
   }
 }
 

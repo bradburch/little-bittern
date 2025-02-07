@@ -1,5 +1,5 @@
-import http from "../http-common";
-import getAppliedJobs from "./sheets";
+import http from '../http-common';
+import getAppliedJobs from './sheets';
 
 const companies: Map<string, number> = new Map();
 
@@ -11,7 +11,7 @@ async function retrieveCompanyId(row: any[]): Promise<number> {
   const company: string = String(row[0]).trim();
 
   if (!companies.has(company)) {
-    const c = (await http.post(`/company/create/${company}`)).data;
+    const c = (await http.post(`/companies/${company}`)).data;
     console.log('Hello!', c);
 
     companies.set(company, c.id!);
@@ -34,12 +34,12 @@ export async function bulkCreateJobs(applied: any[][]) {
   const jobs = await parseJobs(applied);
   console.log('jobs', jobs);
 
-  return await http.post('job/create/bulk', jobs);
+  return await http.post('jobs/bulk', jobs);
 }
 
 async function main() {
   const records = await getAppliedJobs();
-  console.log("records", records);
+  console.log('records', records);
   const bulk = bulkCreateJobs(records);
 }
 

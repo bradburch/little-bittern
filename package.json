@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --build --verbose",
-    "pretty": "npx prettier . --write"
+    "pretty": "npx prettier . --write",
+    "start": "npx tsx ./index.ts"
   },
   "keywords": [],
   "author": "",
