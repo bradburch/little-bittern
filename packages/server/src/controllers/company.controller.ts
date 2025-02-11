@@ -46,4 +46,24 @@ export default class CompanyController {
       });
     }
   }
+
+  async update(req: Request, res: Response) {
+    if (!req.body.url) {
+      res.status(400).send({
+        message: 'Content cannot be empty!',
+      });
+    }
+    const companyId: string = req.params.id;
+
+    try {
+      const repo: CompanyRepository = new CompanyRepository();
+      const success: number[] = await repo.update(req.body, companyId);
+
+      res.status(201).send(success);
+    } catch (err) {
+      res.status(500).send({
+        message: 'Some error occurred while updating companies.' + err,
+      });
+    }
+  }
 }

@@ -75,11 +75,11 @@ export default class JobController {
   async update(req: Request, res: Response) {
     if (!req.body.applicationText) {
       res.status(400).send({
-        message: 'Content can not be empty!',
+        message: 'Content cannot be empty!',
       });
     }
     const jobId: string = req.params.id;
-    
+
     try {
       const repo: JobRepository = new JobRepository();
       const success: number[] = await repo.update(req.body, jobId);
@@ -87,7 +87,7 @@ export default class JobController {
       res.status(201).send(success);
     } catch (err) {
       res.status(500).send({
-        message: 'Some error occurred while updating companies.' + err,
+        message: 'Some error occurred while updating jobs.' + err,
       });
     }
   }

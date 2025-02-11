@@ -53,7 +53,7 @@ export default class JobRepository implements IJobRepository {
         {
           applicationText: job.applicationText,
           title: job.title,
-          location: job.location
+          location: job.location,
         },
         {
           where: { id: id },

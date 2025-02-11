@@ -5,6 +5,7 @@ interface ICompanyRepository {
   save(company: Company): Promise<Company>;
   retrieveAll(): Promise<Company[]>;
   retrieveByName(companyName: string): Promise<Company | null>;
+  update(company: Company, id: string): Promise<number[]>;
 }
 
 export default class CompanyRepository implements ICompanyRepository {
@@ -35,6 +36,21 @@ export default class CompanyRepository implements ICompanyRepository {
       });
     } catch (err) {
       throw new Error(`Could not find ${companyName}`);
+    }
+  }
+
+  public async update(company: Company, id: string): Promise<number[]> {
+    try {
+      return await Company.update(
+        {
+          url: company.url,
+        },
+        {
+          where: { id: id },
+        },
+      );
+    } catch (err) {
+      throw new Error(`Job update with id: ${id} failed.`);
     }
   }
 }

@@ -11,7 +11,8 @@ class CompanyRoutes {
 
   intializeRoutes() {
     this.router.post('/:name', this.controller.create);
-    this.router.get('/all', this.controller.findAll);
+    this.router.put('/:id', this.controller.update);
+    this.router.get('/', this.controller.findAll);
     this.router.get('/:name', this.controller.findByName);
   }
 }
