@@ -15,7 +15,7 @@ export default class JobRepository implements IJobRepository {
         name: job.title,
       });
     } catch (err) {
-      throw new Error('Failed to create job!');
+      throw new Error(`Failed to create job ${job.title}`);
     }
   }
 
@@ -43,7 +43,7 @@ export default class JobRepository implements IJobRepository {
     try {
       return await Job.bulkCreate(jobs);
     } catch (err) {
-      throw new Error(`Bulk create failed due to`);
+      throw new Error(`Bulk create failed due to ${err}`);
     }
   }
 

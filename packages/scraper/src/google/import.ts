@@ -1,9 +1,11 @@
 import http from '../http-common';
+import JobListing from '../util/jobListing';
 import getAppliedJobs from './sheets';
 
 const companies: Map<string, number> = new Map();
 
 function convertToJob(row: any[], companyId: number) {
+  // return new JobListing(row[1], companyId, '', row[9]);
   return { title: row[1], url: row[9], applied: true, companyId: companyId };
 }
 
@@ -12,8 +14,6 @@ async function retrieveCompanyId(row: any[]): Promise<number> {
 
   if (!companies.has(company)) {
     const c = (await http.post(`/companies/${company}`)).data;
-    console.log('Hello!', c);
-
     companies.set(company, c.id!);
   }
 
@@ -32,15 +32,14 @@ async function parseJobs(applied: any[][]): Promise<any[]> {
 
 export async function bulkCreateJobs(applied: any[][]) {
   const jobs = await parseJobs(applied);
-  console.log('jobs', jobs);
 
   return await http.post('jobs/bulk', jobs);
 }
 
 async function main() {
-  const records = await getAppliedJobs();
-  console.log('records', records);
-  const bulk = bulkCreateJobs(records);
+  const appliedJobs = await getAppliedJobs();
+  console.log('records', appliedJobs);
+  const bulk = bulkCreateJobs(appliedJobs);
 }
 
 main();

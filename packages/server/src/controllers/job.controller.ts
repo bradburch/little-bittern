@@ -27,7 +27,7 @@ export default class JobController {
     console.log('Req body: ', req.body);
     if (Object.keys(req.body).length === 0) {
       res.status(400).send({
-        message: 'Bulk create cannot be empty!',
+        message: 'Bulk create cannot be empty',
       });
     }
 
@@ -39,7 +39,7 @@ export default class JobController {
       res.status(201).send(savedJob);
     } catch (err) {
       res.status(500).send({
-        message: 'Some error occurred while retrieving jobs.',
+        message: `Some error occured while bulk creating jobs: ${err}`,
       });
     }
   }
