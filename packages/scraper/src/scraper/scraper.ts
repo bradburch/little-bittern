@@ -1,23 +1,43 @@
-import { url } from 'inspector';
 import http from '../http-common.js';
 import Ashby from './ats/ashby.js';
 import Greenhouse from './ats/greenhouse.js';
 import Lever from './ats/lever.js';
 import JobListing from '../util/jobListing.js';
 
-async function getUrl(url: URL): Promise<any> {
-  try {
-    const response = (await http.get(url.href)).data;
+function cleanUrl(url: string): URL {
+  return new URL(url.split('?')[0].replace('/application', ''));
+}
 
-    return response;
-  } catch (error) {
-    throw error;
+function retrieveATS(url: URL, data: any): any {
+  const hostnameClassify = (hostname: string) => {
+    if (url.hostname.includes(hostname)) {
+      return url.hostname;
+    }
+  };
+
+  switch (url.hostname) {
+    case hostnameClassify('job-boards.greenhouse.io'):
+      return new Greenhouse(data);
+    case hostnameClassify('jobs.ashbyhq.com'):
+      return new Ashby(data);
+    case hostnameClassify('jobs.lever.co'):
+      return new Lever(data);
+    default:
+      return undefined;
   }
 }
 
-async function fetchdb() {
+async function updateJob(jobId: string, listing: JobListing): Promise<any> {
+  return await http.put(`/jobs/${jobId}`, listing);
+}
+
+async function bulkCreateJobs(jobs: JobListing[]): Promise<any> {
+  return await http.post('jobs/bulk', jobs);
+}
+
+async function getApplicationDescriptions() {
   const jobs = (await http.get('/jobs/')).data;
-  const updates = [];
+  const updates: Promise<any>[] = [];
 
   for (var job of jobs) {
     try {
@@ -27,45 +47,24 @@ async function fetchdb() {
         job.url.includes('linkedin')
       )
         continue;
-      const url = new URL(job.url.split('?')[0].replace('/application', ''));
 
-      const data = await getUrl(url);
-      const hostnameClassify = (hostname: string) => {
-        if (url.hostname.includes(hostname)) {
-          return url.hostname;
-        }
-      };
+      const url = cleanUrl(job.url);
+      const data = (await http.get(url.href)).data;
+      const ats = retrieveATS(url, data);
 
-      let ats;
+      if (!ats) continue;
 
-      switch (url.hostname) {
-        case hostnameClassify('job-boards.greenhouse.io'):
-          ats = new Greenhouse(data);
-          break;
-        case hostnameClassify('jobs.ashbyhq.com'):
-          ats = new Ashby(data);
-          break;
-        case hostnameClassify('jobs.lever.co'):
-          ats = new Lever(data);
-          break;
-      }
+      const listing: JobListing | undefined = ats.parseApplication();
 
-      if (ats) {
-        const listing: JobListing | undefined = ats.parseApplication();
-        if (!listing) continue;
+      if (!listing) continue;
 
-        updates.push(http.put(`/jobs/${job.id}`, listing));
-
-        const jobBoard = ats.getCompanyJobBoard();
-        if (jobBoard) {
-          const updateJson: string = JSON.stringify({ url: jobBoard.href });
-          updates.push(http.put(`/companies/${job.companyId}`, updateJson));
-        }
-      }
-    } catch (err) {}
+      updates.push(updateJob(job.id, listing));
+    } catch (err) {
+      console.log(err);
+    }
   }
 
-  // Promise.all(updates);
+  Promise.all(updates);
 }
 
 async function scrapeJobs() {
@@ -75,18 +74,18 @@ async function scrapeJobs() {
   for (var company of companies) {
     try {
       const compUrl = new URL(company.url);
-      if (!compUrl.hostname.includes('greenhouse')) continue;
-      console.log(compUrl.href);
       const data = (await http.get(compUrl.href)).data;
-      const ats = new Greenhouse(data);
+
+      const ats = retrieveATS(compUrl, (await http.get(compUrl.href)).data);
+
       const jobs: JobListing[] = ats.getAvailableJobs(company.id);
 
-      console.log(jobs);
       totalJobs.push(...jobs);
     } catch (err) {}
   }
 
-  return await http.post('jobs/bulk', totalJobs);
+  await bulkCreateJobs(totalJobs);
 }
-// scrapeJobs();
-fetchdb();
+
+scrapeJobs();
+getApplicationDescriptions();

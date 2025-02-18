@@ -14,6 +14,7 @@ class JobRoutes {
     this.router.post('/', this.controller.create);
     this.router.put('/:id', this.controller.update);
     this.router.get('/', this.controller.findAll);
+    this.router.get('/company/:companyId', this.controller.findJobsByCompany);
   }
 }
 

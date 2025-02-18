@@ -91,4 +91,19 @@ export default class JobController {
       });
     }
   }
+
+  async findJobsByCompany(req: Request, res: Response) {
+    const companyId: string = req.params.id;
+
+    try {
+      const repo: JobRepository = new JobRepository();
+      const jobs: Job[] = await repo.retrieveByCompany(companyId);
+
+      res.status(201).send(jobs);
+    } catch (err) {
+      res.status(500).send({
+        message: 'Some error occurred while retrieving companies.' + err,
+      });
+    }
+  }
 }

@@ -1,7 +1,8 @@
 import * as cheerio from 'cheerio';
 import JobListing from '../../util/jobListing';
+import ATSInterface from './atsInterface.js';
 
-export default class Lever {
+export default class Lever implements ATSInterface {
   readonly $: cheerio.CheerioAPI;
 
   constructor(response: any) {
@@ -30,9 +31,27 @@ export default class Lever {
     return this.$('div.location').text().trim();
   }
 
-  getCompanyJobBoard(): URL | undefined {
-    const companyBoard = this.$('a.main-header-logo').attr('href');
+  getCompanyJobBoard(): string | undefined {
+    const companyBoard = this.$('a.main-header-logo').attr('href')?.trim();
 
-    if (companyBoard) return new URL(companyBoard);
+    if (companyBoard)
+      return JSON.stringify({ url: companyBoard.replace('"', '') });
+  }
+
+  getAvailableJobs(companyId: string): JobListing[] {
+    const jobs: JobListing[] = [];
+
+    this.$('div.posting')
+      .children('a')
+      .each((index, element) => {
+        const applicationUrl = this.$(element).attr('href');
+        const title = this.$(element).contents().first().text().trim();
+        const location = this.$(element).contents().last().text().trim();
+        console.log(applicationUrl, title, location);
+
+        jobs.push(new JobListing(title, companyId, location, applicationUrl));
+      });
+
+    return jobs;
   }
 }

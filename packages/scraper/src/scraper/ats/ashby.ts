@@ -1,18 +1,18 @@
 import * as cheerio from 'cheerio';
-import JobListing from '../../util/jobListing';
+import JobListing from '../../util/jobListing.js';
+import ATSInterface from './atsInterface.js';
 
-export default class Ashby {
+export default class Ashby implements ATSInterface {
   readonly $: cheerio.CheerioAPI;
 
   constructor(response: any) {
-    console.log(response);
     this.$ = cheerio.load(response);
   }
 
   parseApplication(): JobListing | undefined {
     const description = this.getDescription();
     const title = this.getTitle();
-    // this.getLocation();
+    const location = this.getLocation();
 
     if (!description && !title) return undefined;
 
@@ -29,13 +29,31 @@ export default class Ashby {
 
   getLocation(): void {}
 
-  getCompanyJobBoard(): URL | undefined {
+  getCompanyJobBoard(): string | undefined {
     const ogURL = this.$('meta[property="og:url"]').attr('content');
     if (ogURL) {
       const lastSlash = ogURL.lastIndexOf('/');
       const companyBoard = ogURL?.substring(0, lastSlash);
 
-      return new URL(companyBoard);
+      if (companyBoard)
+        return JSON.stringify({ url: companyBoard.replace('"', '') });
     }
+  }
+
+  getAvailableJobs(companyId: string): JobListing[] {
+    const jobs: JobListing[] = [];
+
+    this.$('td.cell')
+      .children('a')
+      .each((index, element) => {
+        const applicationUrl = this.$(element).attr('href');
+        const title = this.$(element).contents().first().text().trim();
+        const location = this.$(element).contents().last().text().trim();
+        console.log(applicationUrl, title, location);
+
+        jobs.push(new JobListing(title, companyId, location, applicationUrl));
+      });
+
+    return jobs;
   }
 }

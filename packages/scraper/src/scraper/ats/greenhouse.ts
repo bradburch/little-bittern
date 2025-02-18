@@ -1,10 +1,12 @@
 import * as cheerio from 'cheerio';
 import JobListing from '../../util/jobListing';
+import ATSInterface from './atsInterface.js';
 
-export default class Greenhouse {
+export default class Greenhouse implements ATSInterface {
   readonly $: cheerio.CheerioAPI;
 
   constructor(response: any) {
+    console.log(response);
     this.$ = cheerio.load(response);
   }
 
@@ -30,10 +32,13 @@ export default class Greenhouse {
     return this.$('div.job__location').text().trim();
   }
 
-  getCompanyJobBoard(): URL | undefined {
-    const companyBoard = this.$('a:icontains("back to jobs")').attr('href');
+  getCompanyJobBoard(): string | undefined {
+    const companyBoard = this.$('a:icontains("back to jobs")')
+      .attr('href')
+      ?.trim();
 
-    if (companyBoard) return new URL(companyBoard);
+    if (companyBoard)
+      return JSON.stringify({ url: companyBoard.replace('"', '') });
   }
 
   getAvailableJobs(companyId: string): JobListing[] {

@@ -63,4 +63,16 @@ export default class JobRepository implements IJobRepository {
       throw new Error(`Job update with id: ${id} failed.`);
     }
   }
+
+  public async retrieveByCompany(companyId: string): Promise<Job[]> {
+    try {
+      return await Job.findAll({
+        where: {
+          companyId: companyId,
+        },
+      });
+    } catch (err) {
+      throw new Error(`Could not find jobs for company with id: ${companyId}`);
+    }
+  }
 }
