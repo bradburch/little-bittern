@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
-    "rootDir": "./src",
     "outDir": "./build",
     "allowJs": true,
     "skipLibCheck": true,

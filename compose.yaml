@@ -1,21 +1,40 @@
-# services:
-#   server:
-#     build:
-#       context: ./
-#       dockerfile: ./packages/server/Dockerfile
-#     env_file:
-#       - ./packages/server/.env
-#     depends_on:
-#       - db
-#   db:
-#     image: postgres:latest
-#     ports:
-#       - '5432:5432'
-#     env_file:
-#       - ./packages/server/.env
-#     environment:
-#       POSTGRES_USER: user
-#       POSTGRES_PASSWORD: password
-#       POSTGRES_DB: mydb_development
-#     volumes:
-#       - ./docker/postgres:/var/lib/postgresql/data
+services:
+  client:
+    container_name: client
+    build:
+      context: .
+      dockerfile: ./packages/client/Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+    networks:
+      - app_network
+  server:
+    container_name: server
+    build:
+      context: .
+      dockerfile: ./packages/server/Dockerfile
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - app_network
+
+  db:
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    env_file:
+      - ./packages/server/.env
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydb_development
+    volumes:
+      - ./docker/postgres:/var/lib/postgresql/data
+
+# Define a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+networks:
+  app_network:
+    external: true

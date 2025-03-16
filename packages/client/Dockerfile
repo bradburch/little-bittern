@@ -11,7 +11,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 RUN yarn global add turbo
 COPY . .
-RUN turbo prune @little-bittern/server --docker
+RUN turbo prune @little-bittern/client --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer

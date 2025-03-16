@@ -1,7 +1,7 @@
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -11,5 +11,5 @@ export default function DashboardLayout({
         <main>{children}</main>
       </body>
     </html>
-  )
+  );
 }

@@ -144,3 +144,5 @@ dist
 # next.js
 /.next/
 /out/
+
+.turbo

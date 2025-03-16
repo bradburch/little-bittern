@@ -10,10 +10,13 @@ class CompanyRoutes {
   }
 
   intializeRoutes() {
-    this.router.post('/:name', this.controller.create);
+    this.router.post('/upload', this.controller.uploadFile);
+
+    this.router.post('/create/:name', this.controller.create);
     this.router.put('/:id', this.controller.update);
     this.router.get('/', this.controller.findAll);
     this.router.get('/:name', this.controller.findByName);
+
   }
 }
 

@@ -1,6 +1,7 @@
-import { Request, Response } from 'express';
+import { Request, Response } from 'express-serve-static-core';
 import Company from '../models/company.model.js';
 import CompanyRepository from '../repositories/company.repository.js';
+import { uploadFile } from '../middleware/uploads.js';
 
 export default class CompanyController {
   async create(req: Request, res: Response) {
@@ -64,6 +65,23 @@ export default class CompanyController {
       res.status(500).send({
         message: 'Some error occurred while updating companies.' + err,
       });
+    }
+  }
+
+  async uploadFile(req: Request, res: Response) {
+    try {
+        await uploadFile(req, res);
+
+        console.log('AFTER PROMISFY');
+        console.log(req.file);
+
+        res.status(200).send({
+          message: "Uploaded the file successfully: " + req.file?.originalname,
+        });
+    } catch (err) {
+        res.status(500).send({
+          message: `Could not upload the file: ${req.file?.originalname}. ${err}`,
+        });
     }
   }
 }
